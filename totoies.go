@@ -46,3 +46,16 @@ initialise the static folder for later use
 func InitStaticFolder(_staticFolder embed.FS) {
 	staticFolder = _staticFolder
 }
+
+/*
+Get the value inside a file
+to get the file need to specify the file path
+EX. GetFileData("static/file.txt")
+*/
+func GetFileData(path *string) *[]byte {
+	data, err := staticFolder.ReadFile(*path)
+	if err != nil {
+		return nil
+	}
+	return &data
+}
