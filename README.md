@@ -3,7 +3,9 @@ A file which will be responsible Creating servers, Updating Data Base
 
 # Creating your First Application
 
-    `
+        go get github.com/Totoies/Totoies
+        
+
         import( totoies "github.com/Totoies/Totoies")
 
         func main() {
@@ -17,4 +19,3 @@ A file which will be responsible Creating servers, Updating Data Base
             totoies.App.Buid()
 
         }
-    `
