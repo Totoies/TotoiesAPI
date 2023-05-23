@@ -1,14 +1,12 @@
+package Totois
+
 /*
 * Main file to create applications
  */
-
-package Totois
-
-import (
-	"fmt"
-	"log"
-	"net/http"
-)
+ 
+// import (
+// 	"net/http"
+// )
 
 // Our Application
 type totoies_app struct {
@@ -28,16 +26,16 @@ var App = totoies_app {
 /*
 This function will Start the server
 */
-func (a *totoies_app) Buid() {
+// func (a *totoies_app) Buid() {
 
-	// Start the server
-	fmt.Printf("Server starting on http://%s:%s", a.ServerIP, a.ServerPort)
-	log.Fatal(http.ListenAndServe(a.ServerIP+":"+a.ServerPort, nil))
-}
+// 	// Start the server
+// 	fmt.Printf("Server starting on http://%s:%s", a.ServerIP, a.ServerPort)
+// 	log.Fatal(http.ListenAndServe(a.ServerIP+":"+a.ServerPort, nil))
+// }
 
-func (a *totoies_app)  AddRoutes(_routes map[string]func(w http.ResponseWriter, r *http.Request)){
-	a.Routes = _routes
-	for route, function := range a.Routes {
-		http.HandleFunc(route, function)
-	}
-}
+// func (a *totoies_app)  AddRoutes(_routes map[string]func(w http.ResponseWriter, r *http.Request)){
+// 	a.Routes = _routes
+// 	for route, function := range a.Routes {
+// 		http.HandleFunc(route, function)
+// 	}
+// }
