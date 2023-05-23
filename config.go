@@ -1,6 +1,9 @@
 package Totois
 
-import "embed"
+import (
+	"embed"
+	"net/http"
+)
 
 // Storing the Configarations of the Application
 // Ex. Enviourment which can be either Dev or Prod
@@ -20,3 +23,12 @@ func SetEnviourment(_env bool) {
 var serverIP = "localhost"
 var serverPort = "8080"
 var staticFolder embed.FS
+
+// Our Routing
+/* Routes{
+	"route": functionfunc(w http.ResponseWriter, r *http.Request) {
+		Body----
+	}
+}
+*/
+type Routes map[string]func(w http.ResponseWriter, r *http.Request)

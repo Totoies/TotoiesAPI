@@ -7,15 +7,6 @@ import (
 	"net/http"
 )
 
-// Our Routing
-/* Routes{
-	"route": functionfunc(w http.ResponseWriter, r *http.Request) {
-		Body----
-	}
-}
-*/
-type Routes map[string]func(w http.ResponseWriter, r *http.Request)
-
 /*
 This function will Start the server
 */
