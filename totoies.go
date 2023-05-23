@@ -6,12 +6,6 @@ import (
 	"net/http"
 )
 
-// Enviourment
-const (
-	Prod = false
-	Dev  = true
-)
-
 // Our Routing
 /* Routes{
 	"route": functionfunc(w http.ResponseWriter, r *http.Request) {
@@ -23,32 +17,47 @@ type Routes map[string]func(w http.ResponseWriter, r *http.Request)
 
 // Our Application
 type totoies_app struct {
-	ServerIP    string
-	ServerPort  string
-	Enviourment bool
-	Routes      map[string]func(w http.ResponseWriter, r *http.Request)
+	ServerIP   string
+	ServerPort string
+	Routes     map[string]func(w http.ResponseWriter, r *http.Request)
 }
 
 // app with our default configaration
 var App = totoies_app{
-	ServerIP:    "localhost",
-	ServerPort:  "8080",
-	Enviourment: Dev,
+	ServerIP:   "localhost",
+	ServerPort: "8080",
 }
 
 /*
 This function will Start the server
 */
-func (a *totoies_app) Buid() {
-
+func Buid() {
 	// Start the server
-	fmt.Printf("Server starting on http://%s:%s", a.ServerIP, a.ServerPort)
-	log.Fatal(http.ListenAndServe(a.ServerIP+":"+a.ServerPort, nil))
+	fmt.Printf("Server starting on http://%s:%s", App.ServerIP, App.ServerPort)
+	log.Fatal(http.ListenAndServe(App.ServerIP+":"+App.ServerPort, nil))
 }
 
-func (a *totoies_app) AddRoutes(_routes map[string]func(w http.ResponseWriter, r *http.Request)) {
-	a.Routes = _routes
-	for route, function := range a.Routes {
+/*
+Add Routing to out Web Application
+
+	Ex. CreateRoutes(Routes{
+	            "/": func (w http.ResponseWriter, r *http.Request) {
+	                fmt.Fprint(w, "Hello, World!")
+	            }
+	        })
+*/
+func CreateRoutes(_routes map[string]func(w http.ResponseWriter, r *http.Request)) {
+	App.Routes = _routes
+	for route, function := range App.Routes {
 		http.HandleFunc(route, function)
 	}
+}
+
+/*
+Configure the ServerIp which most of the cases going to be localhost
+and ServerPort
+*/
+func ConfigApplication(_ServerIP string, _ServerPort string) {
+	App.ServerIP = _ServerIP
+	App.ServerPort = _ServerPort
 }
