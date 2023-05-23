@@ -10,4 +10,6 @@ const (
 	Dev  = true
 )
 
+var TestingMassage = "Testing our Import for Totoies"
+
 // var Routes = map[string]func(w http.ResponseWriter, r *http.Request){}
