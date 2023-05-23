@@ -12,6 +12,9 @@ const (
 	Dev  = true
 )
 
+// Our Routing
+type Route map[string]func(w http.ResponseWriter, r *http.Request)
+
 // Our Application
 type totoies_app struct {
 	ServerIP    string
