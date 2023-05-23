@@ -1,6 +1,7 @@
 package Totois
 
 import (
+	"embed"
 	"fmt"
 	"log"
 	"net/http"
@@ -15,26 +16,13 @@ import (
 */
 type Routes map[string]func(w http.ResponseWriter, r *http.Request)
 
-// Our Application
-type totoies_app struct {
-	ServerIP   string
-	ServerPort string
-	Routes     map[string]func(w http.ResponseWriter, r *http.Request)
-}
-
-// app with our default configaration
-var App = totoies_app{
-	ServerIP:   "localhost",
-	ServerPort: "8080",
-}
-
 /*
 This function will Start the server
 */
 func Buid() {
 	// Start the server
-	fmt.Printf("Server starting on http://%s:%s", App.ServerIP, App.ServerPort)
-	log.Fatal(http.ListenAndServe(App.ServerIP+":"+App.ServerPort, nil))
+	fmt.Printf("Server starting on http://%s:%s", serverIP, serverPort)
+	log.Fatal(http.ListenAndServe(serverIP+":"+serverPort, nil))
 }
 
 /*
@@ -47,8 +35,7 @@ Add Routing to out Web Application
 	        })
 */
 func CreateRoutes(_routes map[string]func(w http.ResponseWriter, r *http.Request)) {
-	App.Routes = _routes
-	for route, function := range App.Routes {
+	for route, function := range _routes {
 		http.HandleFunc(route, function)
 	}
 }
@@ -58,6 +45,13 @@ Configure the ServerIp which most of the cases going to be localhost
 and ServerPort
 */
 func ConfigApplication(_ServerIP string, _ServerPort string) {
-	App.ServerIP = _ServerIP
-	App.ServerPort = _ServerPort
+	serverIP = _ServerIP
+	serverPort = _ServerPort
+}
+
+/*
+Configure the static folder
+*/
+func ConfigStaticFolder(_staticFolder embed.FS) {
+	staticFolder = _staticFolder
 }
