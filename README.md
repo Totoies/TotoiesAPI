@@ -18,3 +18,11 @@ A file which will be responsible Creating servers, Updating Data Base
 
         totoies.Buid()
     }
+
+# How to add a static Directory
+
+        -> Add this line in your application [static/*] is the directory
+        //go:embed static/*
+        var staticDir embed.FS
+
+        totoies.InitStaticFolder(staticDir)

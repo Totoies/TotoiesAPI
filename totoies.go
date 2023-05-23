@@ -50,8 +50,8 @@ func ConfigApplication(_ServerIP string, _ServerPort string) {
 }
 
 /*
-Configure the static folder
+initialise the static folder for later use
 */
-func ConfigStaticFolder(_staticFolder embed.FS) {
+func InitStaticFolder(_staticFolder embed.FS) {
 	staticFolder = _staticFolder
 }
