@@ -1,3 +1,3 @@
-module github.com/Totoies/Totoies v0.0.1
+module github.com/Totoies/Totoies v1.0.0
 
 go 1.20
