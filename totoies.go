@@ -45,6 +45,8 @@ initialise the static folder for later use
 */
 func InitStaticFolder(_staticFolder embed.FS) {
 	staticFolder = _staticFolder
+
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFolder))))
 }
 
 /*
@@ -53,9 +55,14 @@ to get the file need to specify the file path
 EX. GetFileData("static/file.txt")
 */
 func GetFileData(path *string) *[]byte {
+
 	data, err := staticFolder.ReadFile(*path)
 	if err != nil {
 		return nil
 	}
 	return &data
+}
+
+func GetStaticFolder() *embed.FS {
+	return &staticFolder
 }
