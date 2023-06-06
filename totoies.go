@@ -57,14 +57,12 @@ func BuildControllers() {
 				log.Fatal("Not able to read ", __view)
 			}
 
-			var _template, __err2 = template.New("template").Parse(string(__file))
-			__controller.Templates[__name] = VTemplate{
-				Template: _template,
-			}
+			__controller.Templates[__name], _ = template.New("template").Parse(string(__file))
+			// __controller.Templates[__name] = _template
 
 			// // *__controller.templates[__name].template = *_template
 
-			if __err2 != nil {
+			if __err != nil {
 				log.Fatal("Not able to create new template")
 				log.Fatal(__err.Error(), http.StatusInternalServerError)
 			}
@@ -74,11 +72,14 @@ func BuildControllers() {
 
 /*
 Execute our template
-Exec(w http.ResponseWriter, __templates *VTemplates, __templateName string)
+Exec(w http.ResponseWriter, __templates *VTemplates, __templateName string, data any)
 totoies.Exec(w, &Home.Templates, "Home")
 */
-func Exec(w http.ResponseWriter, __templates *VTemplates, __templateName string) {
-	(*__templates)[__templateName].Template.Execute(w, (*__templates)[__templateName].Vars)
+func Exec(w http.ResponseWriter, __templates *VTemplates, __templateName string, data VData) {
+	// for _, v := range (*__templates)[__templateName].Vars {
+	// 	fmt.Println(v)
+	// }
+	(*__templates)[__templateName].Execute(w, data)
 }
 
 /*

@@ -40,25 +40,11 @@ type VRoutes map[string]func(w http.ResponseWriter, r *http.Request)
 type VViews map[string]string
 
 /*
-		VTemplate struct {
-		Template *template.Template
-		Vars     map[string]interface{}
-	}
+map[string]*template.Template
 */
-type VTemplate struct {
-	Template *template.Template
-	Vars     map[string]interface{}
-}
+type VTemplates map[string]*template.Template
 
-/*
-map[string]VTemplate
-
-		VTemplate struct {
-		Template *template.Template
-		Vars     map[string]interface{}
-	}
-*/
-type VTemplates map[string]VTemplate
+type VData map[string]interface{}
 
 var serverIP = "localhost"
 var serverPort = "8080"
