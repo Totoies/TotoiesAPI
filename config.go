@@ -34,7 +34,7 @@ type Controller struct {
 	views     VViews
 	templates VTemplates
 }
-type VControllers []Controller
+type VControllers map[string]Controller
 
 type VRoutes map[string]func(w http.ResponseWriter, r *http.Request)
 type VViews map[string]string
