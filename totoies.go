@@ -27,6 +27,7 @@ Add Routing to out Web Application
 */
 func CreateRoutes() {
 	for route, function := range Routes {
+		fmt.Println(route)
 		http.HandleFunc(route, function)
 	}
 }
@@ -45,23 +46,25 @@ Initialise all the controllers and there Required Views
 */
 func BuildControllers() {
 
-	for _, __controller := range Controllers {
+	// __controller
+	for __cname, __controller := range Controllers {
+		fmt.Println(__cname)
 		// loop through all views
-		for __name, __view := range __controller.views {
-
+		for __name, __view := range __controller.Views {
+			fmt.Println(__view)
 			__file, __err := staticFolder.ReadFile(__view)
 			if __err != nil {
 				log.Fatal("Not able to read ", __view)
 			}
 
-			var _template, _ = template.New("template").Parse(string(__file))
-			__controller.templates[__name] = VTemplate{
-				template: _template,
+			var _template, __err2 = template.New("template").Parse(string(__file))
+			__controller.Templates[__name] = VTemplate{
+				Template: _template,
 			}
 
-			// *__controller.templates[__name].template = *_template
+			// // *__controller.templates[__name].template = *_template
 
-			if __err != nil {
+			if __err2 != nil {
 				log.Fatal("Not able to create new template")
 				log.Fatal(__err.Error(), http.StatusInternalServerError)
 			}
@@ -71,10 +74,11 @@ func BuildControllers() {
 
 /*
 Execute our template
-Exec(w http.ResponseWriter, __template *VTemplate)
+Exec(w http.ResponseWriter, __templates *VTemplates, __templateName string)
+totoies.Exec(w, &Home.Templates, "Home")
 */
-func Exec(w http.ResponseWriter, __template *VTemplate) {
-	__template.template.Execute(w, __template.vars)
+func Exec(w http.ResponseWriter, __templates *VTemplates, __templateName string) {
+	(*__templates)[__templateName].Template.Execute(w, (*__templates)[__templateName].Vars)
 }
 
 /*

@@ -31,22 +31,54 @@ func SetEnviourment(_env bool) {
 
 // controller
 type Controller struct {
-	views     VViews
-	templates VTemplates
+	Views     VViews
+	Templates VTemplates
 }
 type VControllers map[string]Controller
 
 type VRoutes map[string]func(w http.ResponseWriter, r *http.Request)
 type VViews map[string]string
 
+/*
+		VTemplate struct {
+		Template *template.Template
+		Vars     map[string]interface{}
+	}
+*/
 type VTemplate struct {
-	template *template.Template
-	vars     map[string]interface{}
+	Template *template.Template
+	Vars     map[string]interface{}
 }
+
+/*
+map[string]VTemplate
+
+		VTemplate struct {
+		Template *template.Template
+		Vars     map[string]interface{}
+	}
+*/
 type VTemplates map[string]VTemplate
 
 var serverIP = "localhost"
 var serverPort = "8080"
 var staticFolder embed.FS
-var Controllers VControllers
-var Routes VRoutes
+var Controllers = make(VControllers)
+var Routes = make(VRoutes)
+
+func CreateController(_view VViews) Controller {
+	return Controller{
+		Views: VViews{
+			"Home": "Static/Views/Home/home.html",
+		},
+		Templates: make(VTemplates),
+	}
+}
+
+func init() {
+	Controllers = make(VControllers)
+	for _, c := range Controllers {
+		c.Templates = make(VTemplates)
+	}
+	Routes = make(VRoutes)
+}
