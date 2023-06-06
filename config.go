@@ -2,6 +2,7 @@ package Totois
 
 import (
 	"embed"
+	"html/template"
 	"net/http"
 )
 
@@ -20,10 +21,6 @@ func SetEnviourment(_env bool) {
 	Enviourment = _env
 }
 
-var serverIP = "localhost"
-var serverPort = "8080"
-var staticFolder embed.FS
-
 // Our Routing
 /* Routes{
 	"route": functionfunc(w http.ResponseWriter, r *http.Request) {
@@ -31,4 +28,25 @@ var staticFolder embed.FS
 	}
 }
 */
-type Routes map[string]func(w http.ResponseWriter, r *http.Request)
+
+// controller
+type Controller struct {
+	views     VViews
+	templates VTemplates
+}
+type VControllers []Controller
+
+type VRoutes map[string]func(w http.ResponseWriter, r *http.Request)
+type VViews map[string]string
+
+type VTemplate struct {
+	template *template.Template
+	vars     map[string]interface{}
+}
+type VTemplates map[string]VTemplate
+
+var serverIP = "localhost"
+var serverPort = "8080"
+var staticFolder embed.FS
+var Controllers VControllers
+var Routes VRoutes

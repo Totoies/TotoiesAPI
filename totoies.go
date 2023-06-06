@@ -3,6 +3,7 @@ package Totois
 import (
 	"embed"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -12,6 +13,9 @@ This function will Start the server
 */
 func Buid() {
 	// Start the server
+	CreateRoutes()
+	BuildControllers()
+
 	fmt.Printf("Server starting on http://%s:%s", serverIP, serverPort)
 	log.Fatal(http.ListenAndServe(serverIP+":"+serverPort, nil))
 }
@@ -19,14 +23,10 @@ func Buid() {
 /*
 Add Routing to out Web Application
 
-	Ex. CreateRoutes(Routes{
-	            "/": func (w http.ResponseWriter, r *http.Request) {
-	                fmt.Fprint(w, "Hello, World!")
-	            }
-	        })
+	Ex. CreateRoutes()
 */
-func CreateRoutes(_routes map[string]func(w http.ResponseWriter, r *http.Request)) {
-	for route, function := range _routes {
+func CreateRoutes() {
+	for route, function := range Routes {
 		http.HandleFunc(route, function)
 	}
 }
@@ -38,6 +38,43 @@ and ServerPort
 func ConfigApplication(_ServerIP string, _ServerPort string) {
 	serverIP = _ServerIP
 	serverPort = _ServerPort
+}
+
+/*
+Initialise all the controllers and there Required Views
+*/
+func BuildControllers() {
+
+	for _, __controller := range Controllers {
+		// loop through all views
+		for __name, __view := range __controller.views {
+
+			__file, __err := staticFolder.ReadFile(__view)
+			if __err != nil {
+				log.Fatal("Not able to read ", __view)
+			}
+
+			var _template, _ = template.New("template").Parse(string(__file))
+			__controller.templates[__name] = VTemplate{
+				template: _template,
+			}
+
+			// *__controller.templates[__name].template = *_template
+
+			if __err != nil {
+				log.Fatal("Not able to create new template")
+				log.Fatal(__err.Error(), http.StatusInternalServerError)
+			}
+		}
+	}
+}
+
+/*
+Execute our template
+Exec(w http.ResponseWriter, __template *VTemplate)
+*/
+func Exec(w http.ResponseWriter, __template *VTemplate) {
+	__template.template.Execute(w, __template.vars)
 }
 
 /*
