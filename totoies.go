@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 )
 
 /*
@@ -107,4 +108,15 @@ func GetFileData(path *string) *[]byte {
 
 func GetStaticFolder() *embed.FS {
 	return &staticFolder
+}
+
+func PrintCurrentDir() {
+	currentdir, err := os.Getwd()
+
+	if err != nil {
+		fmt.Println("No Informtaion for the current directory")
+		return
+	}
+
+	fmt.Println(currentdir)
 }
