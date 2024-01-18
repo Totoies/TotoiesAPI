@@ -61,13 +61,30 @@ totoies.InitStaticFolder(staticDir)
 ```
 
 # Example Controller 
-        var Home = totoies.Controller{
-            views: totoies.VViews{
-                "templateName1": "path1"
-                "templateName2": "path2"
-            }
-        }
 
-        func (h *totoies.Controller) LoadHome(w http.ResponseWriter, r *http.Request) {
-            totoies.Exec(w, Home.templates["TemplateName1"])
-        }
+View will in Static/Views/ControllerName/viewname.html
+```golang
+package Controller
+
+import (
+	"net/http"
+
+	totoies "github.com/Totoies/Totoies"
+)
+
+var Home = totoies.CreateController(totoies.VViews{
+	// "Home": "Static/Views/Home/home.html",
+	"Home": "home",
+})
+
+/*
+LoadHome() - Function load our controller and other settings
+*/
+func LoadHome(w http.ResponseWriter, r *http.Request) {
+
+	totoies.Exec(w, &Home.Templates, "Home", totoies.VData{
+		"WelcomeTxt": "Welcome All",
+		"Title":      "First Application",
+	})
+}
+```
