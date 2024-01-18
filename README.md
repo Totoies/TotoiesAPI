@@ -11,6 +11,7 @@ A file which will be responsible Creating servers, Updating Data Base
 - [Create your First Application](#create-your-first-application)
 - [How to add a static Directory](#how-to-add-a-static-directory)
 - [Example Controller](#example-controller)
+- [include one Html inside another html](#include-one-html-inside-another-html)
 
 # Setup Enviourment
 
@@ -88,3 +89,12 @@ func LoadHome(w http.ResponseWriter, r *http.Request) {
 	})
 }
 ```
+
+
+# include one Html inside another html
+
+syntax is 
+
+@includ(htmlfilename)
+
+it will include what ever is written in that file

@@ -4,9 +4,12 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 /*
@@ -56,22 +59,68 @@ func BuildControllers() {
 		// loop through all views
 		for __name, __view := range __controller.Views {
 			fmt.Println(__view)
-			__file, __err := staticFolder.ReadFile(viewDirectory + __name + "/" + __view + ".html")
-			if __err != nil {
-				log.Fatal("Not able to read ", __view)
+			// holding the index view
+			mainViewFilePath := viewDirectory + __name + "/" + __view + ".html"
+			ControllerViewFolder := viewDirectory + __name + "/" // folder path of the Current controller view
+
+			// Get the main view first
+			tempV, _ := ReadStaticFile(mainViewFilePath)
+			mainView := string(tempV)
+			if mainView == "" {
+				mainView = "There are some issue reading the view file please check the server log"
+				__controller.Templates[__name], _ = template.New("template").Parse(string(mainView))
+				return
 			}
+			AllFilesInView, _ := readFilesInDirectory(ControllerViewFolder)
 
-			__controller.Templates[__name], _ = template.New("template").Parse(string(__file))
-			// __controller.Templates[__name] = _template
-
-			// // *__controller.templates[__name].template = *_template
-
-			if __err != nil {
-				log.Fatal("Not able to create new template")
-				log.Fatal(__err.Error(), http.StatusInternalServerError)
+			for _filename, _value := range AllFilesInView {
+				mainView = strings.Replace(mainView, "{{@include("+_filename+")}}", string(_value), -1)
 			}
+			// gettign Footer and header file
+			tempV, _ = ReadStaticFile(ControllerViewFolder + "header.html")
+			header := string(tempV)
+			tempV, _ = ReadStaticFile(ControllerViewFolder + "footer.html")
+			footer := string(tempV)
+			mainView = header + mainView + footer
+
+			__controller.Templates[__name], _ = template.New("template").Parse(mainView)
 		}
 	}
+}
+
+// function to read files from static directory
+func ReadStaticFile(_filePath string) ([]byte, error) {
+	__file, __err := staticFolder.ReadFile(_filePath)
+	if __err != nil {
+		log.Fatal(__err.Error(), http.StatusInternalServerError)
+		return nil, __err
+	}
+
+	return __file, nil
+
+}
+
+// reads all the files in that directory and returns "folder name" : and folder information in byte
+func readFilesInDirectory(directoryPath string) (map[string][]byte, error) {
+	fileMap := make(map[string][]byte)
+
+	files, err := ioutil.ReadDir(directoryPath)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, file := range files {
+		filePath := filepath.Join(directoryPath, file.Name())
+
+		content, err := ioutil.ReadFile(filePath)
+		if err != nil {
+			return nil, err
+		}
+
+		fileMap[file.Name()] = content
+	}
+
+	return fileMap, nil
 }
 
 /*
