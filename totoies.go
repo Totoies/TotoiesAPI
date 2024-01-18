@@ -37,23 +37,26 @@ func CreateRoutes() {
 Configure the ServerIp which most of the cases going to be localhost
 and ServerPort
 */
-func ConfigApplication(_ServerIP string, _ServerPort string) {
+func ServerConfig(_ServerIP string, _ServerPort string) {
 	serverIP = _ServerIP
 	serverPort = _ServerPort
 }
 
 /*
 Initialise all the controllers and there Required Views
+Gettings all the html views name and read the file and create template out of it
+user have to give the View name Example if the Html view is in /Static/Views/Home/index.html
 */
 func BuildControllers() {
 
+	viewDirectory := "Static/Views/"
 	// __controller
 	for __cname, __controller := range Controllers {
 		fmt.Println(__cname)
 		// loop through all views
 		for __name, __view := range __controller.Views {
 			fmt.Println(__view)
-			__file, __err := staticFolder.ReadFile(__view)
+			__file, __err := staticFolder.ReadFile(viewDirectory + __name + "/" + __view + ".html")
 			if __err != nil {
 				log.Fatal("Not able to read ", __view)
 			}

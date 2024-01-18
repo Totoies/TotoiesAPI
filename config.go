@@ -29,13 +29,6 @@ func SetEnviourment(_env bool) {
 }
 */
 
-// controller
-type Controller struct {
-	Views     VViews
-	Templates VTemplates
-}
-type VControllers map[string]Controller
-
 type VRoutes map[string]func(w http.ResponseWriter, r *http.Request)
 type VViews map[string]string
 
@@ -43,6 +36,14 @@ type VViews map[string]string
 map[string]*template.Template
 */
 type VTemplates map[string]*template.Template
+
+// controller is consist of views and templates
+// Views are strning data of the html file associated with the controller
+type Controller struct {
+	Views     VViews
+	Templates VTemplates
+}
+type VControllers map[string]Controller
 
 type VData map[string]interface{}
 
@@ -54,9 +55,7 @@ var Routes = make(VRoutes)
 
 func CreateController(_view VViews) Controller {
 	return Controller{
-		Views: VViews{
-			"Home": "Static/Views/Home/home.html",
-		},
+		Views:     _view,
 		Templates: make(VTemplates),
 	}
 }
