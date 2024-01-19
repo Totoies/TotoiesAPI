@@ -21,14 +21,6 @@ func SetEnviourment(_env bool) {
 	Enviourment = _env
 }
 
-// Our Routing
-/* Routes{
-	"route": functionfunc(w http.ResponseWriter, r *http.Request) {
-		Body----
-	}
-}
-*/
-
 type VRoutes map[string]func(w http.ResponseWriter, r *http.Request)
 type VViews map[string]string
 
@@ -68,15 +60,4 @@ func init() {
 		c.Templates = make(VTemplates)
 	}
 	Routes = make(VRoutes)
-
-	// RegisterRoutes()
-	// RegisterControllers()
 }
-
-// func RegisterRoutes() {
-
-// }
-
-// func RegisterControllers() {
-
-// }
