@@ -17,7 +17,7 @@ This function will Start the server
 */
 func Buid() {
 	// Start the server
-	CreateRoutes()
+	CreateRoutes(Routes)
 	BuildControllers()
 
 	fmt.Printf("Server starting on http://%s:%s", serverIP, serverPort)
@@ -29,8 +29,8 @@ Add Routing to out Web Application
 
 	Ex. CreateRoutes()
 */
-func CreateRoutes() {
-	for route, function := range Routes {
+func CreateRoutes(__routes VRoutes) {
+	for route, function := range __routes {
 		fmt.Println(route)
 		http.HandleFunc(route, function)
 	}
@@ -52,10 +52,13 @@ user have to give the View name Example if the Html view is in /Static/Views/Hom
 */
 func BuildControllers() {
 
-	viewDirectory := "Static/Views/"
+	viewDirectory := "Static/views/"
 	// __controller
 	for __cname, __controller := range Controllers {
 		fmt.Println(__cname)
+		// Creating local Routes
+		CreateRoutes(__controller.Routes)
+
 		// loop through all views
 		for __name, __view := range __controller.Views {
 			fmt.Println(__view)

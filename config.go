@@ -42,6 +42,7 @@ type VTemplates map[string]*template.Template
 type Controller struct {
 	Views     VViews
 	Templates VTemplates
+	Routes    VRoutes
 }
 type VControllers map[string]Controller
 
@@ -57,6 +58,7 @@ func CreateController(_view VViews) Controller {
 	return Controller{
 		Views:     _view,
 		Templates: make(VTemplates),
+		Routes:    make(VRoutes),
 	}
 }
 
@@ -66,4 +68,15 @@ func init() {
 		c.Templates = make(VTemplates)
 	}
 	Routes = make(VRoutes)
+
+	// RegisterRoutes()
+	// RegisterControllers()
 }
+
+// func RegisterRoutes() {
+
+// }
+
+// func RegisterControllers() {
+
+// }
